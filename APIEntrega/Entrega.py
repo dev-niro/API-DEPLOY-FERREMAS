@@ -13,8 +13,8 @@ entregas = []
 
 class EntregasPendientes(Resource):
     def get(self):
-        entregas_pendientes = [entrega for entrega in entregas if entrega['estado'] != 'Entregada' and entrega['tipo_envio'] == 'Retiro']
-        despachos_pendientes = [entrega for entrega in entregas if entrega['estado'] != 'Entregada' and entrega['tipo_envio'] == 'Despacho']
+        entregas_pendientes = [entrega for entrega in entregas if entrega['estado'] != 'Entregado' and entrega['tipo_envio'] == 'Retiro']
+        despachos_pendientes = [entrega for entrega in entregas if entrega['estado'] != 'Entregado' and entrega['tipo_envio'] == 'Despacho']
         return {'entregas_pendientes': entregas_pendientes,
                 'despachos_pendientes': despachos_pendientes,}, 200
 
@@ -26,6 +26,7 @@ class Entrega(Resource):
                 return {'message': 'Estado de la entrega cambiado correctamente'}, 200
         return {'message': 'Entrega no encontrada'}, 404
 
+class Entregas(Resource):
     def post (self):
         body = request.get_json()
         body['estado'] = 'Pendiente'
@@ -35,7 +36,8 @@ class Entrega(Resource):
     def get(self):
         return {'entregas': entregas}, 200
     
-api.add_resource(Entrega, '/api/entregas')
+api.add_resource(Entrega, '/api/entrega/<id_entrega>')
+api.add_resource(Entregas, '/api/entregas')
 api.add_resource(EntregasPendientes, '/api/pendientes')
 
 if __name__ == '__main__':
